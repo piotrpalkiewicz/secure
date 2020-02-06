@@ -8,7 +8,7 @@ from protector.views import (
 
 urlpatterns = [
     path("create/", ResourceCreateView.as_view(), name="protector-resource_create"),
-    path("detail/", ResourceDetailView.as_view(), name="protector-resource_detail"),
+    path("detail/<pk>", ResourceDetailView.as_view(), name="protector-resource_detail"),
     path(
         "protected/<protected_url>",
         ResourceProtectedDetailView.as_view(),
