@@ -4,6 +4,17 @@
 
 {% block content %}
 
-    Hello World! TODO
+    <h1>Protected Resource</h1>
+
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            {{ form.errors }}
+            <div class="form-group">
+                {% render_field form.password|add_class:"form-control" placeholder=form.password.label %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+        </fieldset>
+    </form>
 
 {% endblock %}

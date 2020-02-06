@@ -3,11 +3,11 @@ from django.core.exceptions import PermissionDenied
 from django.test import TestCase, RequestFactory, tag
 from django.urls import reverse
 
-from protector import services
-from protector.forms import ResourceForm
+from protector import utils
+from protector.forms import ResourceForm, ResourcePermissionForm
 from protector.models import Resource
 from protector.tests.factories import UserFactory, ResourceFactory
-from protector.views import ResourceCreateView, ResourceDetailView
+from protector.views import ResourceCreateView, ResourceDetailView, ResourceProtectedDetailView
 
 
 @tag("integration")
@@ -87,8 +87,8 @@ class ResourceDetailViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.user = UserFactory()
-        self.resource_protected_url = services.generate_protected_url()
-        self.resource_password = services.generate_password()
+        self.resource_protected_url = utils.generate_protected_url()
+        self.resource_password = utils.generate_password()
         self.resource = ResourceFactory(
             author=self.user,
             protected_url=self.resource_protected_url,
@@ -136,3 +136,25 @@ class ResourceDetailViewTestCase(TestCase):
         self.assertContains(response, self.resource_password)
 
 
+@tag("integration")
+class ResourceProtectedDetailViewTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.resource_protected_url = utils.generate_protected_url()
+        self.resource_password = utils.generate_password()
+        self.resource = ResourceFactory(
+            protected_url=self.resource_protected_url,
+            password=self.resource_password,
+        )
+
+    def test_view_contains_form(self):
+        request = self.factory.get(
+            reverse("protector-protected_resource", args=(self.resource.protected_url,))
+        )
+        request.user = AnonymousUser()
+
+        response = ResourceProtectedDetailView.as_view()(
+            request, slug=self.resource.protected_url
+        )
+
+        self.assertEqual(response.context_data["form"].__class__, ResourcePermissionForm)

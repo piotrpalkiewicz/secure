@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from protector.consts import GENERATED_PASSWORD_LEN
 from protector.models import Resource
 
 
@@ -26,4 +27,4 @@ class ResourceForm(forms.ModelForm):
 
 
 class ResourcePermissionForm(forms.Form):
-    pass
+    password = forms.CharField(max_length=GENERATED_PASSWORD_LEN, label="Enter a Password")
