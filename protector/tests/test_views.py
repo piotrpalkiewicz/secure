@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AnonymousUser
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.test import TestCase, RequestFactory, tag
 from django.urls import reverse
 
@@ -7,7 +7,11 @@ from protector import utils
 from protector.forms import ResourceForm, ResourcePermissionForm
 from protector.models import Resource
 from protector.tests.factories import UserFactory, ResourceFactory
-from protector.views import ResourceCreateView, ResourceDetailView, ResourceProtectedDetailView
+from protector.views import (
+    ResourceCreateView,
+    ResourceDetailView,
+    ResourceProtectedDetailView,
+)
 
 
 @tag("integration")
@@ -143,9 +147,23 @@ class ResourceProtectedDetailViewTestCase(TestCase):
         self.resource_protected_url = utils.generate_protected_url()
         self.resource_password = utils.generate_password()
         self.resource = ResourceFactory(
-            protected_url=self.resource_protected_url,
-            password=self.resource_password,
+            protected_url=self.resource_protected_url, password=self.resource_password,
         )
+
+    def _get_requests_post_response(self, data):
+        request = self.factory.post(
+            reverse(
+                "protector-protected_resource",
+                args=(self.resource.protected_url,),
+            ),
+            data=data,
+        )
+        request.user = AnonymousUser()
+
+        response = ResourceProtectedDetailView.as_view()(
+            request, protected_url=self.resource.protected_url
+        )
+        return response
 
     def test_view_contains_form(self):
         request = self.factory.get(
@@ -157,4 +175,19 @@ class ResourceProtectedDetailViewTestCase(TestCase):
             request, protected_url=self.resource.protected_url
         )
 
-        self.assertEqual(response.context_data["form"].__class__, ResourcePermissionForm)
+        self.assertEqual(
+            response.context_data["form"].__class__, ResourcePermissionForm
+        )
+
+    def test_password_not_match_should_raise_validation_error(self):
+        data = {"password": "not_match"}
+
+        response = self._get_requests_post_response(data)
+
+        self.assertFalse(response.context_data["form"].is_valid())
+
+    def test_password_match_should_redirect_to_url(self):
+        data = {"password": self.resource_password}
+        response = self._get_requests_post_response(data)
+
+        self.assertEqual(response.url, self.resource.url)
