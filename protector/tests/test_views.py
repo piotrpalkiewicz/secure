@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AnonymousUser
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import PermissionDenied
 from django.test import TestCase, RequestFactory, tag
 from django.urls import reverse
 
@@ -153,8 +153,7 @@ class ResourceProtectedDetailViewTestCase(TestCase):
     def _get_requests_post_response(self, data):
         request = self.factory.post(
             reverse(
-                "protector-protected_resource",
-                args=(self.resource.protected_url,),
+                "protector-protected_resource", args=(self.resource.protected_url,),
             ),
             data=data,
         )

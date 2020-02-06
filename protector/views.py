@@ -1,12 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied, ValidationError
-from django.http import HttpResponseNotAllowed, HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, FormView
-from django.views.generic.edit import ModelFormMixin
 
-from protector import utils, services
+from protector import utils
 from protector.forms import ResourceForm, ResourcePermissionForm
 from protector.models import Resource
 
