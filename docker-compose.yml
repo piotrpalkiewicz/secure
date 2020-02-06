@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    environment:
+      - DEBUG=${DEBUG}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

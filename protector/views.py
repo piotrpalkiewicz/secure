@@ -14,6 +14,9 @@ class ResourceCreateView(LoginRequiredMixin, CreateView):
     model = Resource
     form_class = ResourceForm
 
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.protected_url = utils.generate_protected_url()
