@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from protector.consts import GENERATED_PASSWORD_LEN
+
 
 class Resource(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -11,6 +13,7 @@ class Resource(models.Model):
     )
     file = models.FileField(blank=True, upload_to="media/", verbose_name="File")
     protected_url = models.CharField(blank=True, max_length=120)
+    password = models.CharField(blank=True, max_length=GENERATED_PASSWORD_LEN)
 
     def __repr__(self) -> str:
         return f"<Resource>: {self.id or 0} - {self.url or self.file}"

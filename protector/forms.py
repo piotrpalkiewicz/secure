@@ -23,3 +23,7 @@ class ResourceForm(forms.ModelForm):
             )
         if not url and not file:
             raise ValidationError("Upload File or type URL Address you want protect.")
+
+
+class ResourcePermissionForm(forms.Form):
+    pass

@@ -12,6 +12,6 @@ urlpatterns = [
     path(
         "protected/<protected_url>",
         ResourceProtectedDetailView.as_view(),
-        name="protector-resource_protected",
+        name="protector-protected_resource",
     ),
 ]
