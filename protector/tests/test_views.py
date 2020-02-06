@@ -6,7 +6,6 @@ from protector.views import ResourceCreateView
 
 
 class ResourceCreateViewTestCase(TestCase):
-
     def setUp(self):
         self.factory = RequestFactory()
 

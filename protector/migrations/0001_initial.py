@@ -7,16 +7,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Resource',
+            name="Resource",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('url', models.URLField(blank=True, verbose_name='URL Address')),
-                ('file', models.FileField(blank=True, upload_to='media/', verbose_name='File')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("url", models.URLField(blank=True, verbose_name="URL Address")),
+                (
+                    "file",
+                    models.FileField(
+                        blank=True, upload_to="media/", verbose_name="File"
+                    ),
+                ),
             ],
         ),
     ]

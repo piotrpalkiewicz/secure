@@ -8,7 +8,6 @@ from protector.forms import ResourceForm
 
 
 class ResourceFormTestCase(unittest.TestCase):
-
     def setUp(self):
         super().setUp()
         self.form_class = ResourceForm
@@ -21,15 +20,15 @@ class ResourceFormTestCase(unittest.TestCase):
         data = {
             "url": "https://example.com",
         }
-        files = {
-            "file": mock.MagicMock(spec=File)
-        }
+        files = {"file": mock.MagicMock(spec=File)}
         form = self.form_class(data=data, files=files)
         self.assertFalse(form.is_valid())
 
     def test_resource_form_should_be_valid_when_file_is_set(self):
         files = {
-            "file": SimpleUploadedFile("file.png", b"file_content", content_type="image/png")
+            "file": SimpleUploadedFile(
+                "file.png", b"file_content", content_type="image/png"
+            )
         }
         form = self.form_class(data={}, files=files)
         self.assertTrue(form.is_valid())
