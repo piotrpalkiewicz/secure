@@ -36,8 +36,10 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
     "widget_tweaks",
+    "django_extensions",
     "protector",
 ]
 
@@ -118,3 +120,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
+# Sites
+SITE_ID = 1

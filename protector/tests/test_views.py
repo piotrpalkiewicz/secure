@@ -154,7 +154,7 @@ class ResourceProtectedDetailViewTestCase(TestCase):
         request.user = AnonymousUser()
 
         response = ResourceProtectedDetailView.as_view()(
-            request, slug=self.resource.protected_url
+            request, protected_url=self.resource.protected_url
         )
 
         self.assertEqual(response.context_data["form"].__class__, ResourcePermissionForm)

@@ -5,12 +5,17 @@
 {% block content %}
 
     <h1>Your Data is protected.</h1>
-    <p>Copy link and password or click on it! This link is valid for 24 hours (TODO data tutaj)</p>
+    <p>Copy link and password or click on it! This link is valid for next 24 hours</p>
     <h5>
         <a href="{% url 'protector-protected_resource' protected_url=object.protected_url %}">
-            {% url 'protector-protected_resource' protected_url=object.protected_url %}
+            {{ object.full_protected_url }}
         </a>
     </h5>
-    <h5>Password: {{ object.password|safe }}</h5>
+    <div class="form-group">
+      <fieldset>
+        <label class="control-label" for="Passwordt">Password</label>
+        <input class="form-control" type="text" readonly="" value="{{ object.password|safe }}">
+      </fieldset>
+    </div>
 
 {% endblock %}

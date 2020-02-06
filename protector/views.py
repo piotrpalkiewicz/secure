@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseNotAllowed
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, FormView
+from django.views.generic.edit import ModelFormMixin
 
 from protector import utils
 from protector.forms import ResourceForm, ResourcePermissionForm
@@ -36,8 +38,19 @@ class ResourceProtectedDetailView(DetailView):
     model = Resource
     template_name = "protector/resource_protection_form.html"
     slug_field = "protected_url"
+    slug_url_kwarg = "protected_url"
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data["form"] = ResourcePermissionForm()
         return context_data
+
+
+class ResourceProtectionFormPostView(FormView, ModelFormMixin):
+    model = Resource
+
+    def get(self, request, *args, **kwargs):
+        raise HttpResponseNotAllowed()
+
+    def post(self, request, *args, **kwargs):
+        pass
