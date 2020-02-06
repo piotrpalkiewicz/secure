@@ -3,10 +3,12 @@ from unittest import mock
 
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import tag
 
 from protector.forms import ResourceForm
 
 
+@tag("unit")
 class ResourceFormTestCase(unittest.TestCase):
     def setUp(self):
         super().setUp()
