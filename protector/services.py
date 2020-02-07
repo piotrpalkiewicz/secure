@@ -1,6 +1,8 @@
-from django.conf import settings
+from datetime import timedelta
 
-import file_utils
+from django.db.models import F
+from django.utils import timezone
+
 from protector.models import Resource
 
 
@@ -12,5 +14,10 @@ def is_password_match(*, protected_url, password):
     return True
 
 
-def get_file(filename):
-    return file_utils.file_service.get_file_url(filename)
+def is_valid_link(created_at):
+    return created_at + timedelta(days=1) > timezone.now()
+
+
+def increment_resource_visits(resource):
+    resource.visits = F("visits") + 1
+    resource.save()

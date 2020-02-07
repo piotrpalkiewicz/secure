@@ -1,7 +1,11 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import AnonymousUser
 from django.core.exceptions import PermissionDenied
+from django.http import Http404
 from django.test import TestCase, RequestFactory, tag
 from django.urls import reverse
+from django.utils import timezone
 
 from protector import utils
 from protector.forms import ResourceForm, ResourcePermissionForm
@@ -180,7 +184,6 @@ class ResourceProtectedDetailViewTestCase(TestCase):
 
     def test_password_not_match_should_raise_validation_error(self):
         data = {"password": "not_match"}
-
         response = self._get_requests_post_response(data)
 
         self.assertFalse(response.context_data["form"].is_valid())
@@ -190,3 +193,25 @@ class ResourceProtectedDetailViewTestCase(TestCase):
         response = self._get_requests_post_response(data)
 
         self.assertEqual(response.url, self.resource.url)
+
+    def test_password_match_should_increment_visits(self):
+        data = {"password": self.resource_password}
+        self.assertEqual(self.resource.visits, 0)
+        response = self._get_requests_post_response(data)
+
+        self.resource.refresh_from_db()
+        self.assertEqual(self.resource.visits, 1)
+
+    def test_should_raise_404_when_link_out_of_date(self):
+        three_days_ago = timezone.now() - timedelta(days=3)
+        self.resource.created_at = three_days_ago
+        self.resource.save()
+        request = self.factory.get(
+            reverse("protector-protected_resource", args=(self.resource.protected_url,))
+        )
+        request.user = AnonymousUser()
+
+        with self.assertRaises(Http404):
+            ResourceProtectedDetailView.as_view()(
+                request, protected_url=self.resource.protected_url
+            )

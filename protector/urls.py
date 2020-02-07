@@ -4,7 +4,8 @@ from protector.views import (
     ResourceCreateView,
     ResourceDetailView,
     ResourceProtectedDetailView,
-    DownloadFileView)
+    DownloadFileView,
+)
 
 urlpatterns = [
     path("create/", ResourceCreateView.as_view(), name="protector-resource_create"),
@@ -17,7 +18,7 @@ urlpatterns = [
         name="protector-protected_resource",
     ),
     path(
-        "download/<pk>/",
+        "download/<protected_url>/",
         DownloadFileView.as_view(),
         name="protector-download",
     ),

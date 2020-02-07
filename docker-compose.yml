@@ -1,20 +1,17 @@
 version: '3'
 
 services:
-  db:
-    image: postgres
   web:
     build:
       context: .
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile
     env_file: .env
-#    environment:
-#      - DEBUG=${DEBUG}
-#      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-#      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-#      - S3_BUCKET=${S3_BUCKET}
     volumes:
     - .:/app
-    expose:
-      - "8000"
-    command: gunicorn secure.wsgi:application --bind 0.0.0.0:${PORT}
+    ports:
+      - "8000:8765"
+    command: python manage.py runserver 0.0.0.0:8765
+    depends_on:
+      - db
+  db:
+    image: postgres
