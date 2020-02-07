@@ -1,10 +1,8 @@
-import boto3
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views import View
 from django.views.generic import CreateView, DetailView, FormView
 from django.views.generic.detail import BaseDetailView
 

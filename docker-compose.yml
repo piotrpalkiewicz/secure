@@ -13,5 +13,11 @@ services:
     command: python manage.py runserver 0.0.0.0:8765
     depends_on:
       - db
+      - redis
   db:
     image: postgres
+  redis:
+    restart: always
+    image: redis:latest
+    expose:
+      - "6379"

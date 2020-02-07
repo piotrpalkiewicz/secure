@@ -22,11 +22,15 @@ class Resource(models.Model):
     visits = models.PositiveIntegerField(default=0, verbose_name="Visits")
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = "Resource"
+        verbose_name_plural = "Resources"
+
     def __repr__(self) -> str:
         return f"<Resource>: {self.id or 0} - {self.url or self.file}"
 
     def __str__(self):
-        return f"{self.id or 0} - {self.url or self.file}"
+        return f"{self.url or self.file}"
 
     @property
     def full_protected_url(self):

@@ -197,7 +197,7 @@ class ResourceProtectedDetailViewTestCase(TestCase):
     def test_password_match_should_increment_visits(self):
         data = {"password": self.resource_password}
         self.assertEqual(self.resource.visits, 0)
-        response = self._get_requests_post_response(data)
+        self._get_requests_post_response(data)
 
         self.resource.refresh_from_db()
         self.assertEqual(self.resource.visits, 1)
