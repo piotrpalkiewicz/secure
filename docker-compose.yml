@@ -7,15 +7,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
-    environment:
-      - DEBUG=${DEBUG}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - S3_BUCKET=${S3_BUCKET}
-    command: python manage.py runserver 0.0.0.0:8000
+    env_file: .env
+#    environment:
+#      - DEBUG=${DEBUG}
+#      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+#      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#      - S3_BUCKET=${S3_BUCKET}
     volumes:
-      - .:/code
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
+    - .:/app
+    expose:
+      - "8000"
+    command: gunicorn secure.wsgi:application --bind 0.0.0.0:${PORT}

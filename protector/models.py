@@ -13,7 +13,7 @@ class Resource(models.Model):
         verbose_name="URL Address",
         help_text="Type URL Address that you want to protect",
     )
-    file = models.FileField(blank=True, upload_to="media/", verbose_name="File")
+    file = models.FileField(blank=True, verbose_name="File")
     protected_url = models.CharField(blank=True, max_length=120)
     password = models.CharField(blank=True, max_length=GENERATED_PASSWORD_LEN)
 

@@ -6,7 +6,6 @@ WORKDIR /app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DEBUG 0
 
 # install psycopg2
 RUN apk update \
@@ -29,4 +28,4 @@ RUN adduser -D myuser
 USER myuser
 
 # run gunicorn
-CMD gunicorn secure.wsgi:application --bind 0.0.0.0:$PORT
+#CMD gunicorn secure.wsgi:application --bind 0.0.0.0:$PORT
