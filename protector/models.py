@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from protector import utils
 from protector.consts import GENERATED_PASSWORD_LEN
+from protector.managers import ResourceManager
 from protector.utils import get_resource_file_path
 
 
@@ -23,6 +24,8 @@ class Resource(models.Model):
     password = models.CharField(blank=True, max_length=GENERATED_PASSWORD_LEN)
     visits = models.PositiveIntegerField(default=0, verbose_name="Visits")
     created_at = models.DateField(auto_now_add=True)
+
+    objects = ResourceManager()
 
     class Meta:
         verbose_name = "Resource"

@@ -44,7 +44,7 @@ class ResourceProtectedDetailView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if not services.is_valid_link(self.get_object().created_at):
-            raise Http404
+            raise Http404()
         return super().dispatch(request, *args, **kwargs)
 
     def get_object(self):

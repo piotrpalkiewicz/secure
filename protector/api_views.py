@@ -1,8 +1,6 @@
-from django.db.models import Case, IntegerField, When, Count
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import NotFound
-from rest_framework.generics import get_object_or_404
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -25,15 +23,7 @@ class ResourceViewset(
 
     @action(detail=False, methods=["get"])
     def stats(self, request):
-        qs = (
-            Resource.objects.filter(visits__gt=0)
-            .values("created_at")
-            .annotate(is_file=Case(When(url="", then=1), output_field=IntegerField(),),)
-            .annotate(is_url=Case(When(file="", then=1), output_field=IntegerField(),),)
-            .annotate(links=Count("is_url"))
-            .annotate(files=Count("is_file"))
-            .values("created_at", "links", "files")
-        ).annotate(Count("created_at")).order_by("-created_at")
+        qs = Resource.objects.visit_statistics()
         serializer = ResourceStatsSerializer(qs, many=True)
         return Response(serializer.data)
 
@@ -45,8 +35,15 @@ class ProtectedResourceViewset(viewsets.ViewSet):
     @action(detail=True, methods=["post"])
     def authorize(self, request, protected_url):
         resource = Resource.objects.filter(protected_url=protected_url).first()
+        password = request.POST.get("password")
+        print(request.POST)
+        print(request.POST)
+        print(request.POST)
+        print(request.POST)
         if not resource or not services.is_valid_link(resource.created_at):
             raise NotFound()
+        if not password or not services.is_password_match(protected_url=protected_url, password=password):
+            raise ValidationError()
         serializer = ProtectedResourceSerializer(instance=resource)
         services.increment_resource_visits(resource)
         return Response(serializer.data)
