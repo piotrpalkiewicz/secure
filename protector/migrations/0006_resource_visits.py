@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('protector', '0005_auto_20200207_1154'),
+        ("protector", "0005_auto_20200207_1154"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='resource',
-            name='visits',
-            field=models.PositiveIntegerField(default=0, verbose_name='Visits'),
+            model_name="resource",
+            name="visits",
+            field=models.PositiveIntegerField(default=0, verbose_name="Visits"),
         ),
     ]

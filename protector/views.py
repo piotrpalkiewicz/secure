@@ -20,8 +20,6 @@ class ResourceCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.protected_url = utils.generate_protected_url()
-        form.instance.password = utils.generate_password()
         return super().form_valid(form)
 
     def get_success_url(self):

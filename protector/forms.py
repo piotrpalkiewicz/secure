@@ -14,17 +14,18 @@ class ResourceForm(forms.ModelForm):
             "file",
         )
 
-    def clean(self) -> None:
-        cleaned_data = super().clean()
-        url = cleaned_data.get("url")
-        file = self.files.get("file")
-
-        if url and file:
-            raise ValidationError(
-                "You can protect only one source at time - URL or File."
-            )
-        if not url and not file:
-            raise ValidationError("Upload File or type URL Address you want protect.")
+    # def clean(self) -> None:
+    #     cleaned_data = super().clean()
+    #     url = cleaned_data.get("url")
+    #     file = self.files.get("file")
+    #
+    #     if url and file:
+    #         raise ValidationError(
+    #             "You can protect only one source at time - URL or File."
+    #         )
+    #     if not url and not file:
+    #         raise ValidationError("Upload File or type URL Address you want protect.")
+    #
 
 
 class ResourcePermissionForm(forms.Form):

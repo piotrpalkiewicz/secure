@@ -8,19 +8,25 @@ import protector.utils
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('protector', '0004_resource_password'),
+        ("protector", "0004_resource_password"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='resource',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="resource",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='resource',
-            name='file',
-            field=models.FileField(blank=True, upload_to=protector.utils.get_resource_file_path, verbose_name='File'),
+            model_name="resource",
+            name="file",
+            field=models.FileField(
+                blank=True,
+                upload_to=protector.utils.get_resource_file_path,
+                verbose_name="File",
+            ),
         ),
     ]

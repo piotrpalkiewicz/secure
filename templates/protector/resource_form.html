@@ -8,7 +8,7 @@
   {% csrf_token %}
   <fieldset>
     <h2>Create Protected Resource</h2>
-      {{ form.errors }}
+    {% include "includes/form_errors.html" %}
     <div class="form-group">
      {% render_field form.url|add_class:"form-control" placeholder=form.url.label %}
      <small class="form-text text-muted">{{ form.url.help_text }}</small>

@@ -148,11 +148,7 @@ class ResourceDetailViewTestCase(TestCase):
 class ResourceProtectedDetailViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.resource_protected_url = utils.generate_protected_url()
-        self.resource_password = utils.generate_password()
-        self.resource = ResourceFactory(
-            protected_url=self.resource_protected_url, password=self.resource_password,
-        )
+        self.resource = ResourceFactory()
 
     def _get_requests_post_response(self, data):
         request = self.factory.post(
@@ -189,13 +185,13 @@ class ResourceProtectedDetailViewTestCase(TestCase):
         self.assertFalse(response.context_data["form"].is_valid())
 
     def test_password_match_should_redirect_to_url(self):
-        data = {"password": self.resource_password}
+        data = {"password": self.resource.password}
         response = self._get_requests_post_response(data)
 
         self.assertEqual(response.url, self.resource.url)
 
     def test_password_match_should_increment_visits(self):
-        data = {"password": self.resource_password}
+        data = {"password": self.resource.password}
         self.assertEqual(self.resource.visits, 0)
         self._get_requests_post_response(data)
 

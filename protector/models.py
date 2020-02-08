@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
+from protector import utils
 from protector.consts import GENERATED_PASSWORD_LEN
 from protector.utils import get_resource_file_path
 
@@ -20,7 +22,7 @@ class Resource(models.Model):
     protected_url = models.CharField(blank=True, max_length=120)
     password = models.CharField(blank=True, max_length=GENERATED_PASSWORD_LEN)
     visits = models.PositiveIntegerField(default=0, verbose_name="Visits")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateField(auto_now_add=True)
 
     class Meta:
         verbose_name = "Resource"
@@ -31,6 +33,22 @@ class Resource(models.Model):
 
     def __str__(self):
         return f"{self.url or self.file}"
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.protected_url = utils.generate_protected_url()
+            self.password = utils.generate_password()
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if self.url and self.file:
+            raise ValidationError(
+                "You can protect only one source at time - URL or File."
+            )
+        if not self.url and not self.file:
+            raise ValidationError("Upload File or type URL Address you want protect.")
+        return cleaned_data
 
     @property
     def full_protected_url(self):
