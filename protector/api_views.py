@@ -35,11 +35,7 @@ class ProtectedResourceViewset(viewsets.ViewSet):
     @action(detail=True, methods=["post"])
     def authorize(self, request, protected_url):
         resource = Resource.objects.filter(protected_url=protected_url).first()
-        password = request.POST.get("password")
-        print(request.POST)
-        print(request.POST)
-        print(request.POST)
-        print(request.POST)
+        password = request.data.get("password")
         if not resource or not services.is_valid_link(resource.created_at):
             raise NotFound()
         if not password or not services.is_password_match(protected_url=protected_url, password=password):

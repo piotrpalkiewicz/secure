@@ -32,7 +32,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
-    "radiant-escarpment-02896.herokuapp.com",
+    "dry-scrubland-53938.herokuapp.com",
 ]
 
 
@@ -143,13 +143,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+USE_S3 = os.environ.get("USE_S3") == "True"
+
+if USE_S3:
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+else:
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 AWS_STORAGE_BUCKET_NAME = os.environ.get("S3_BUCKET")
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
-
-FILE_SERVICE = "aws"
 
 # Sites
 SITE_ID = 1
@@ -157,7 +160,7 @@ SITE_ID = 1
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis:6379/0",
+        "LOCATION": os.environ.get('REDIS_URL'),
         "OPTIONS": {"CLIENT_CLASS": "django_redis.client.DefaultClient",},
     }
 }
