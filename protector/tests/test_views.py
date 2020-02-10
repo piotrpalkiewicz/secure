@@ -18,7 +18,6 @@ from protector.views import (
 )
 
 
-@tag("integration")
 class ResourceCreateViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -90,18 +89,11 @@ class ResourceCreateViewTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-@tag("integration")
 class ResourceDetailViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.user = UserFactory()
-        self.resource_protected_url = utils.generate_protected_url()
-        self.resource_password = utils.generate_password()
-        self.resource = ResourceFactory(
-            author=self.user,
-            protected_url=self.resource_protected_url,
-            password=self.resource_password,
-        )
+        self.resource = ResourceFactory(author=self.user)
 
     def test_view_get_status_code(self):
         request = self.factory.get(
@@ -140,11 +132,10 @@ class ResourceDetailViewTestCase(TestCase):
 
         response = ResourceDetailView.as_view()(request, pk=self.resource.pk)
 
-        self.assertContains(response, self.resource_protected_url)
-        self.assertContains(response, self.resource_password)
+        self.assertContains(response, self.resource.protected_url)
+        self.assertContains(response, self.resource.password)
 
 
-@tag("integration")
 class ResourceProtectedDetailViewTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()

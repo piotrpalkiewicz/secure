@@ -6,7 +6,11 @@ from rest_framework.response import Response
 
 from protector import services
 from protector.models import Resource
-from protector.serializers import ResourceSerializer, ProtectedResourceSerializer, ResourceStatsSerializer
+from protector.serializers import (
+    ResourceSerializer,
+    ProtectedResourceSerializer,
+    ResourceStatsSerializer,
+)
 
 
 class ResourceViewset(
@@ -42,7 +46,9 @@ class ProtectedResourceViewset(viewsets.ViewSet):
         print(request.POST)
         if not resource or not services.is_valid_link(resource.created_at):
             raise NotFound()
-        if not password or not services.is_password_match(protected_url=protected_url, password=password):
+        if not password or not services.is_password_match(
+            protected_url=protected_url, password=password
+        ):
             raise ValidationError()
         serializer = ProtectedResourceSerializer(instance=resource)
         services.increment_resource_visits(resource)

@@ -44,14 +44,15 @@ class Resource(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
-        cleaned_data = super().clean()
+        super().clean()
         if self.url and self.file:
             raise ValidationError(
                 "You can protect only one source at time - URL or File."
             )
         if not self.url and not self.file:
-            raise ValidationError("Upload File or type URL Address you want protect.")
-        return cleaned_data
+            raise ValidationError(
+                "Upload File or type URL Address you want to protect."
+            )
 
     @property
     def full_protected_url(self):
