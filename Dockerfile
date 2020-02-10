@@ -28,4 +28,4 @@ RUN python manage.py collectstatic --noinput
 #USER myuser
 
 # run gunicorn
-CMD gunicorn secure.wsgi:application --bind 0.0.0.0:${PORT} --reload
+CMD gunicorn secure.wsgi:application --bind 0.0.0.0:${PORT}

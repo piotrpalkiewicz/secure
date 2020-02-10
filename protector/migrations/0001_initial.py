@@ -16,48 +16,20 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Resource",
+            name='Resource',
             fields=[
-                (
-                    "id",
-                    models.AutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                (
-                    "url",
-                    models.URLField(
-                        blank=True,
-                        help_text="Type URL Address that you want to protect",
-                        verbose_name="URL Address",
-                    ),
-                ),
-                (
-                    "file",
-                    models.FileField(
-                        blank=True,
-                        upload_to=protector.utils.get_resource_file_path,
-                        verbose_name="File",
-                    ),
-                ),
-                ("protected_url", models.CharField(blank=True, max_length=120)),
-                ("password", models.CharField(blank=True, max_length=15)),
-                (
-                    "visits",
-                    models.PositiveIntegerField(default=0, verbose_name="Visits"),
-                ),
-                ("created_at", models.DateField(auto_now_add=True)),
-                (
-                    "author",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to=settings.AUTH_USER_MODEL,
-                    ),
-                ),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('url', models.URLField(blank=True, help_text='Type URL Address that you want to protect', verbose_name='URL Address')),
+                ('file', models.FileField(blank=True, upload_to=protector.utils.get_resource_file_path, verbose_name='File')),
+                ('protected_url', models.CharField(blank=True, max_length=120)),
+                ('password', models.CharField(blank=True, max_length=15)),
+                ('visits', models.PositiveIntegerField(default=0, verbose_name='Visits')),
+                ('created_at', models.DateField(auto_now_add=True)),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
-            options={"verbose_name": "Resource", "verbose_name_plural": "Resources",},
+            options={
+                'verbose_name': 'Resource',
+                'verbose_name_plural': 'Resources',
+            },
         ),
     ]
