@@ -6,6 +6,12 @@ from django.utils import timezone
 from protector.models import Resource
 
 
+def django_doctor_check():
+    queryset = Resource.objects.all()
+    if queryset:
+        return 1
+    return 0
+
 def is_password_match(*, protected_url, password):
     try:
         Resource.objects.get(protected_url=protected_url, password=password)
