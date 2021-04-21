@@ -12,10 +12,7 @@ router.register(r"resource", protector_views.ResourceViewset, basename="resource
 router.register(
     r"protected", protector_views.ProtectedResourceViewset, basename="protected"
 )
-x = 5
-z = x / 0
-fd=54.0
-fdsfs
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("protector/", include("protector.urls")),
