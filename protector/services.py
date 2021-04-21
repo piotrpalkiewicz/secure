@@ -10,7 +10,7 @@ def django_doctor_check():
     queryset = Resource.objects.all()
     if queryset:
         return 1
-    return 0
+    return 1/0
 
 def is_password_match(*, protected_url, password):
     try:
