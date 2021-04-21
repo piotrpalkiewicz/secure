@@ -6,6 +6,25 @@ from django.utils import timezone
 from protector.models import Resource
 
 
+def very_complicated_function(x):
+    for i in range(5):
+        for j in range(15):
+            if x == 5:
+                 if x % 7:
+                      for z in range(2):
+                          print(z)
+            else:
+                return 5
+         return 2
+     return "X"
+
+
+def django_doctor_check():
+    queryset = Resource.objects.all()
+    if queryset:
+        return 1
+    return 1/0
+
 def is_password_match(*, protected_url, password):
     try:
         Resource.objects.get(protected_url=protected_url, password=password)
