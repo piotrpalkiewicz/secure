@@ -14,6 +14,7 @@ router.register(
 )
 
 urlpatterns = [
+;
     path("admin/", admin.site.urls),
     path("protector/", include("protector.urls")),
     path("api/v1/", include(router.urls)),
